@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const { authRouter, profileRouter, requestRouter, feedRouter, userRouter } = require('./routes');
 const app = express();
-
+require('dotenv').config();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(
@@ -24,8 +24,8 @@ connectDB().
     then(() => {
         console.log('Database connected');
 
-        app.listen("7777", () => {
-            console.log('Port listing on port 7777');
+        app.listen(process.env.PORT, () => {
+            console.log('Port listing on port');
         });
     })
     .catch(() => {
