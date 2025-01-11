@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
         trim: true,
         maxLength: 50
     },
-    email: {
+    emailId: {
         type: String,
         required: [true, 'Email is required'], // Ensure email is provided
         trim: true, // Remove any extra spaces
@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
         //     'Please provide a valid email address' // Custom error message
         // ],
         validate(value) {
-            if(!validator.isEmail(value)) {
+            if (!validator.isEmail(value)) {
                 throw new Error('Please provide a valid email address.');
             }
         },
@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
         validate(value) {
-            if(!validator.isStrongPassword(value)) {
+            if (!validator.isStrongPassword(value)) {
                 throw new Error('Password should be strong.');
             }
         }
@@ -75,7 +75,7 @@ const userSchema = new mongoose.Schema({
             return 'https://randomuser.me/api/portraits/lego/1.jpg'; // Fallback for other cases
         },
         validate(value) {
-            if(!validator.isURL(value)) {
+            if (!validator.isURL(value)) {
                 throw new Error('Please provide a valid Url.');
             }
         }
@@ -91,16 +91,16 @@ const userSchema = new mongoose.Schema({
     // }
 });
 
-userSchema.index({firstName: 1, lastName: 1});
-userSchema.index({gender: 1});
-userSchema.index({age: 1});
+userSchema.index({ firstName: 1, lastName: 1 });
+userSchema.index({ gender: 1 });
+userSchema.index({ age: 1 });
 
 userSchema.methods.getJWT = async function () {
     const user = this;
-    const token = await jwt.sign({_id: user._id}, 'testing@#$', {
+    const token = await jwt.sign({ _id: user._id }, 'testing@#$', {
         expiresIn: "1d"
     });
-    return token; 
+    return token;
 }
 
 userSchema.methods.validatePassword = async function (password) {

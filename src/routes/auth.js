@@ -6,12 +6,12 @@ const router = express.Router();
 
 router.post("/signup", async (req, res) => {
     try {
-        const {firstName, lastName, email, password} = req.body;
+        const { firstName, lastName, emailId, password } = req.body;
         const hasPassword = await bcrypt.hash(password, 10);
         const user = new User({
             firstName,
             lastName,
-            email,
+            emailId,
             password: hasPassword
         });
         await user.save();
@@ -24,14 +24,14 @@ router.post("/signup", async (req, res) => {
 
 router.post("/login", async (req, res) => {
     try {
-        const {email, password} = req.body;
-        const userData = await User.findOne({email: email});
-        if(!userData) {
+        const { emailId, password } = req.body;
+        const userData = await User.findOne({ emailId: emailId });
+        if (!userData) {
             throw new Error('Invalid Credentials.');
         }
         isPasswordValid = await userData.validatePassword(password);
-        
-        if(!isPasswordValid){
+
+        if (!isPasswordValid) {
             throw new Error('Invalid Credentials.');
         }
         const JWTToken = await userData.getJWT();
